@@ -1,0 +1,3 @@
+rootProject.name = 'hashi-gen'
+
+include 'hashi-gen-jvm', 'hashi-gen-js'
