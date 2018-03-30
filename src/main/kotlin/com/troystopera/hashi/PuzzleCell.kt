@@ -1,5 +1,7 @@
 package com.troystopera.hashi
 
+import com.troystopera.hashi.util.Orientation
+
 sealed class PuzzleCell {
 
     fun isEmpty() = this == EmptyCell
@@ -10,7 +12,7 @@ sealed class PuzzleCell {
 
 object EmptyCell : PuzzleCell()
 
-open class NodeCell protected constructor(val value: Int) : PuzzleCell() {
+open class NodeCell protected constructor(open val value: Int) : PuzzleCell() {
 
     companion object {
 
@@ -22,33 +24,17 @@ open class NodeCell protected constructor(val value: Int) : PuzzleCell() {
 
 }
 
-sealed class BridgeCell(val value: Int) : PuzzleCell() {
-
-    fun isVertical() = this is VerticalBridge
-
-    fun isHorizontal() = this is HorizontalBridge
-
-}
-
-class VerticalBridge private constructor(value: Int) : BridgeCell(value) {
+class BridgeCell(val value: Int, val orientation: Orientation) : PuzzleCell() {
 
     companion object {
 
-        private val cache = hashMapOf<Int, VerticalBridge>()
+        private val vCache = hashMapOf<Int, BridgeCell>()
+        private val hCache = hashMapOf<Int, BridgeCell>()
 
-        operator fun get(value: Int) = cache.getOrPut(value, { VerticalBridge(value) })
-
-    }
-
-}
-
-class HorizontalBridge private constructor(value: Int) : BridgeCell(value) {
-
-    companion object {
-
-        private val cache = hashMapOf<Int, HorizontalBridge>()
-
-        operator fun get(value: Int) = cache.getOrPut(value, { HorizontalBridge(value) })
+        fun get(value: Int, orientation: Orientation) = when (orientation) {
+            Orientation.VERTICAL -> vCache.getOrPut(value, { BridgeCell(value, orientation) })
+            Orientation.HORIZONTAL -> hCache.getOrPut(value, { BridgeCell(value, orientation) })
+        }
 
     }
 
