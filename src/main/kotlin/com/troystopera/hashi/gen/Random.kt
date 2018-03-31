@@ -5,8 +5,15 @@ package com.troystopera.hashi.gen
  */
 class Random(seed: Long) {
 
-    var seed = (seed xor multiplier) and mask
+    var seed = (seed xor MULTIPLIER) and MASK
         private set
+
+    fun nextNormalInt(n: Int): Int {
+        var value = 0
+        for (i in 1..NORMAL_SAMPLES)
+            value += nextInt(n)
+        return value / NORMAL_SAMPLES
+    }
 
     fun nextInt(n: Int): Int {
         var bits = next(31)
@@ -21,14 +28,15 @@ class Random(seed: Long) {
     fun nextBoolean() = next(1) != 0
 
     private fun next(bits: Int): Int {
-        seed = (seed * multiplier + addend) and mask
+        seed = (seed * MULTIPLIER + ADDEND) and MASK
         return (seed ushr (48 - bits)).toInt()
     }
 
     companion object {
-        private const val multiplier: Long = 0x5DEECE66DL
-        private const val addend: Long = 0xBL
-        private const val mask: Long = (1L shl 48) - 1
+        private const val MULTIPLIER: Long = 0x5DEECE66DL
+        private const val ADDEND: Long = 0xBL
+        private const val MASK: Long = (1L shl 48) - 1
+        private const val NORMAL_SAMPLES = 3
     }
 
 }

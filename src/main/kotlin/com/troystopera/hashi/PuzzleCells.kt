@@ -24,7 +24,7 @@ open class NodeCell protected constructor(open val value: Int) : PuzzleCell() {
 
 }
 
-class BridgeCell(val value: Int, val orientation: Orientation) : PuzzleCell() {
+class BridgeCell private constructor(val value: Int, val orientation: Orientation) : PuzzleCell() {
 
     companion object {
 
