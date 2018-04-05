@@ -1,5 +1,6 @@
 package com.troystopera.hashi
 
+import com.troystopera.hashi.util.Coordinate
 import com.troystopera.hashi.util.Orientation
 
 sealed class PuzzleCell {
@@ -12,17 +13,7 @@ sealed class PuzzleCell {
 
 object EmptyCell : PuzzleCell()
 
-open class NodeCell protected constructor(open val value: Int) : PuzzleCell() {
-
-    companion object {
-
-        private val cache = hashMapOf<Int, NodeCell>()
-
-        operator fun get(value: Int) = cache.getOrPut(value, { NodeCell(value) })
-
-    }
-
-}
+abstract class NodeCell(open val value: Int, val coordinate: Coordinate) : PuzzleCell()
 
 class BridgeCell private constructor(val value: Int, val orientation: Orientation) : PuzzleCell() {
 

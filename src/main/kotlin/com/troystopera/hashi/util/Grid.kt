@@ -29,6 +29,18 @@ class Grid(val height: Int, val width: Int) {
         }
     }
 
+    fun distanceToEdge(coordinate: Coordinate, direction: Direction): Int = try {
+        validateCoordinate(coordinate)
+        when (direction) {
+            Direction.UP -> coordinate.row
+            Direction.DOWN -> height - coordinate.row
+            Direction.LEFT -> coordinate.col
+            Direction.RIGHT -> width - coordinate.col
+        }
+    } catch (ex: IndexOutOfBoundsException) {
+        -1
+    }
+
     private fun validateCoordinate(coordinate: Coordinate) {
         if (coordinate.row < 0 || coordinate.row >= height)
             throw IndexOutOfBoundsException("Row ${coordinate.row} out of bounds")

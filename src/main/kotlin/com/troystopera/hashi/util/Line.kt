@@ -1,26 +1,25 @@
 package com.troystopera.hashi.util
 
-class Line(val start: Coordinate, val end: Coordinate) : Iterable<Coordinate> {
+open class Line(val start: Coordinate, val end: Coordinate) : Iterable<Coordinate> {
 
-    val orientation: Orientation = when {
-        start == end -> throw IllegalArgumentException("Start and End must be different coordinates")
-        start.row == end.row -> Orientation.HORIZONTAL
-        start.col == end.col -> Orientation.VERTICAL
-        else -> throw IllegalArgumentException("$start and $end cannot form a line")
-    }
+    val orientation: Orientation = Orientation.fromOrThrow(start, end)
 
-    val direction: Direction = when (orientation) {
-        Orientation.VERTICAL -> {
-            if (start.row < end.row) Direction.DOWN
-            else Direction.UP
-        }
-        Orientation.HORIZONTAL -> {
-            if (start.col < end.col) Direction.RIGHT
-            else Direction.LEFT
-        }
+    val direction: Direction = Direction.fromOrThrow(start, end)
+
+    val length = when (direction) {
+        Direction.UP -> start.row - end.row
+        Direction.DOWN -> end.row - start.row
+        Direction.LEFT -> start.col - end.col
+        Direction.RIGHT -> end.col - start.col
     }
 
     override fun iterator() = CoordinateIterator()
+
+    companion object {
+
+        fun isValid(start: Coordinate, end: Coordinate): Boolean = (start.row == end.row) || (start.col == end.col)
+
+    }
 
     inner class CoordinateIterator : Iterator<Coordinate> {
 

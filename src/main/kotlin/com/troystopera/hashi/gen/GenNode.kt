@@ -6,9 +6,9 @@ import com.troystopera.hashi.util.Direction
 
 internal class GenNode(
         value: Int,
-        val coordinate: Coordinate,
+        coordinate: Coordinate,
         random: Random
-) : Comparable<GenNode>, NodeCell(value) {
+) : Comparable<GenNode>, NodeCell(value, coordinate) {
 
     override var value: Int = value
         private set

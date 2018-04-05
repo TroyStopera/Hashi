@@ -33,6 +33,21 @@ enum class Direction(private val transFun: (Coordinate, Int) -> Coordinate) {
             return rOrder.toMutableList()
         }
 
+        internal fun fromOrThrow(start: Coordinate, end: Coordinate): Direction = from(start, end)
+                ?: throw IllegalArgumentException("$start and $end cannot form a line")
+
+        fun from(start: Coordinate, end: Coordinate): Direction? = when (Orientation.from(start, end)) {
+            Orientation.VERTICAL -> {
+                if (start.row < end.row) Direction.DOWN
+                else Direction.UP
+            }
+            Orientation.HORIZONTAL -> {
+                if (start.col < end.col) Direction.RIGHT
+                else Direction.LEFT
+            }
+            null -> null
+        }
+
     }
 
 }
