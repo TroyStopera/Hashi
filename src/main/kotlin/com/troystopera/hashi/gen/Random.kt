@@ -25,6 +25,10 @@ class Random(seed: Long) {
         return value
     }
 
+    fun nextDouble(): Double {
+        return ((next(26).toLong() shl 27) + next(27)) / (1L shl 53).toDouble()
+    }
+
     fun nextBoolean() = next(1) != 0
 
     private fun next(bits: Int): Int {

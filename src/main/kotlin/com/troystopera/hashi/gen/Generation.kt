@@ -2,18 +2,16 @@ package com.troystopera.hashi.gen
 
 import com.troystopera.hashi.Constraints
 import com.troystopera.hashi.HashiPuzzle
-import com.troystopera.hashi.util.Grid
 
 class Generator(val options: GenerationOptions) {
 
     fun generate(seed: Long = Seed.randomSeed()): HashiPuzzle {
         val random = Random(seed)
-        val grid = Grid(options.height, options.width)
+        val grid = GenGrid(options.height, options.width)
         val initialNode = GenNode(0, random.nextNormalInt(options.height), random.nextNormalInt(options.width), random)
         val spreadAlg = options.algorithm.getInstance(grid, options, random, initialNode)
 
-        while (spreadAlg.nodeCount() < options.nodeCount && spreadAlg.canSpread())
-            spreadAlg.spread()
+        while (spreadAlg.nodeCount() < options.nodeCount && spreadAlg.spread());
 
         return HashiPuzzle(grid)
     }
@@ -26,7 +24,7 @@ class GenerationOptions(
         nodeCount: Int = 12,
         bridgeDensity: Double = 0.5,
         maxBridgeWidth: Int = 2,
-        val algorithm: GenerationAlgorithm
+        val algorithm: GenerationAlgorithm = GenerationAlgorithm.BREADTH_FIRST_SPREAD
 ) {
 
     val height: Int = when {
@@ -62,10 +60,11 @@ class GenerationOptions(
 
 }
 
-enum class GenerationAlgorithm {
+enum class GenerationAlgorithm(private val factory: (GenGrid, GenerationOptions, Random, GenNode) -> SpreadAlgorithm) {
 
-    ;
+    BREADTH_FIRST_SPREAD({ grid, options, random, initial -> SpreadBreadthFirst(grid, options, random, initial) });
 
-    internal abstract fun getInstance(grid: Grid, options: GenerationOptions, random: Random, initialNode: GenNode): SpreadAlgorithm
+    internal fun getInstance(grid: GenGrid, options: GenerationOptions, random: Random, initialNode: GenNode) =
+            factory(grid, options, random, initialNode)
 
 }
