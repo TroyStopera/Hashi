@@ -15,10 +15,14 @@ open class Line(val start: Coordinate, val end: Coordinate) : Iterable<Coordinat
 
     override fun iterator() = CoordinateIterator()
 
+    override fun hashCode(): Int = start.hashCode() xor end.hashCode()
+
+    override fun equals(other: Any?): Boolean =
+            if (other !is Line) false
+            else start == other.start && end == other.end
+
     companion object {
-
         fun isValid(start: Coordinate, end: Coordinate): Boolean = (start.row == end.row) || (start.col == end.col)
-
     }
 
     inner class CoordinateIterator : Iterator<Coordinate> {

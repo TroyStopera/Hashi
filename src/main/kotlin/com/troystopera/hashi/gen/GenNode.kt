@@ -56,9 +56,8 @@ internal class GenNode(
 
     override fun hashCode(): Int = coordinate.hashCode() xor (value shl 8)
 
-    override fun equals(other: Any?): Boolean {
-        if (other !is GenNode) return false
-        return (value == other.value) && (coordinate == other.coordinate)
-    }
+    override fun equals(other: Any?): Boolean =
+            if (other !is GenNode) false
+            else (value == other.value) && (coordinate == other.coordinate)
 
 }

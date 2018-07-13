@@ -7,8 +7,8 @@ enum class Orientation {
 
     companion object {
 
-        internal fun fromOrThrow(start: Coordinate, end: Coordinate): Orientation = from(start, end)
-                ?: throw IllegalArgumentException("$start and $end cannot form a line")
+        internal fun fromOrThrow(start: Coordinate, end: Coordinate): Orientation =
+                from(start, end) ?: throw IllegalArgumentException("$start and $end cannot form a line")
 
         fun from(start: Coordinate, end: Coordinate): Orientation? {
             if (Line.isValid(start, end)) {

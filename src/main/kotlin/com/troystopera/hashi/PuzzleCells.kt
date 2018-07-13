@@ -5,9 +5,9 @@ import com.troystopera.hashi.util.Orientation
 
 sealed class PuzzleCell {
 
-    fun isEmpty() = this == EmptyCell
+    fun isEmpty() = this === EmptyCell
 
-    fun isNotEmpty() = this != EmptyCell
+    fun isNotEmpty() = this !== EmptyCell
 
 }
 

@@ -2,12 +2,12 @@ package com.troystopera.hashi.util
 
 import com.troystopera.hashi.gen.Random
 
-enum class Direction(private val transFun: (Coordinate, Int) -> Coordinate) {
+enum class Direction(val orientation: Orientation, private val transFun: (Coordinate, Int) -> Coordinate) {
 
-    UP({ c, d -> Coordinate(c.row - d, c.col) }),
-    DOWN({ c, d -> Coordinate(c.row + d, c.col) }),
-    LEFT({ c, d -> Coordinate(c.row, c.col - d) }),
-    RIGHT({ c, d -> Coordinate(c.row, c.col + d) });
+    UP(Orientation.VERTICAL, { c, d -> Coordinate(c.row - d, c.col) }),
+    DOWN(Orientation.VERTICAL, { c, d -> Coordinate(c.row + d, c.col) }),
+    LEFT(Orientation.HORIZONTAL, { c, d -> Coordinate(c.row, c.col - d) }),
+    RIGHT(Orientation.HORIZONTAL, { c, d -> Coordinate(c.row, c.col + d) });
 
     fun translate(coordinate: Coordinate, dist: Int): Coordinate = transFun(coordinate, dist)
 
