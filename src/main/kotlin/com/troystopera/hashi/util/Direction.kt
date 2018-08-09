@@ -11,6 +11,8 @@ enum class Direction(val orientation: Orientation, private val transFun: (Coordi
 
     fun translate(coordinate: Coordinate, dist: Int): Coordinate = transFun(coordinate, dist)
 
+    fun translate(line: Line, dist: Int): Line = Line(translate(line.start, dist), translate(line.end, dist))
+
     fun opposite() = when (this) {
         UP -> DOWN
         DOWN -> UP

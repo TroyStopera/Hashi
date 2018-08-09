@@ -13,10 +13,17 @@ internal class GenNode(
     override var value: Int = value
         private set
 
+    override var coordinate: Coordinate = coordinate
+        private set
+
     private val uncheckedDirs = Direction.randomOrder(random)
     private val checkedDirs = mutableListOf<Direction>()
 
     constructor(value: Int, row: Int, col: Int, random: Random) : this(value, Coordinate(row, col), random)
+
+    fun setCoordinate(coordinate: Coordinate) {
+        this.coordinate = coordinate
+    }
 
     fun spreadability() = uncheckedDirs.size + checkedDirs.size
 

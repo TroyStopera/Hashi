@@ -13,7 +13,7 @@ sealed class PuzzleCell {
 
 object EmptyCell : PuzzleCell()
 
-abstract class NodeCell(open val value: Int, val coordinate: Coordinate) : PuzzleCell()
+abstract class NodeCell(open val value: Int, open val coordinate: Coordinate) : PuzzleCell()
 
 class BridgeCell private constructor(val value: Int, val orientation: Orientation) : PuzzleCell() {
 

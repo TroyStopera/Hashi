@@ -29,6 +29,11 @@ open class Grid(val height: Int, val width: Int) {
         }
     }
 
+    fun lineThrough(coordinate: Coordinate, orientation: Orientation): Line = when (orientation) {
+        Orientation.VERTICAL -> Line(Coordinate(0, coordinate.col), Coordinate(height - 1, coordinate.col))
+        Orientation.HORIZONTAL -> Line(Coordinate(coordinate.row, 0), Coordinate(coordinate.row, width - 1))
+    }
+
     fun distanceToEdge(coordinate: Coordinate, direction: Direction): Int = try {
         validateCoordinate(coordinate)
         when (direction) {
@@ -39,6 +44,21 @@ open class Grid(val height: Int, val width: Int) {
         }
     } catch (ex: IndexOutOfBoundsException) {
         -1
+    }
+
+    fun distanceToEdge(line: Line, direction: Direction) = when (line.orientation) {
+        Orientation.VERTICAL -> when (direction) {
+            Direction.UP,
+            Direction.DOWN -> distanceToEdge(if (line.direction == direction) line.end else line.start, direction)
+            Direction.LEFT,
+            Direction.RIGHT -> distanceToEdge(line.start, direction)
+        }
+        Orientation.HORIZONTAL -> when (direction) {
+            Direction.UP,
+            Direction.DOWN -> distanceToEdge(line.start, direction)
+            Direction.LEFT,
+            Direction.RIGHT -> distanceToEdge(if (line.direction == direction) line.end else line.start, direction)
+        }
     }
 
     private fun validateCoordinate(coordinate: Coordinate) {

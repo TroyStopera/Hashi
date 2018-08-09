@@ -2,6 +2,7 @@ package com.troystopera.hashi.gen
 
 import com.troystopera.hashi.Constraints
 import com.troystopera.hashi.HashiPuzzle
+import com.troystopera.hashi.util.Direction
 
 class Generator(val options: GenerationOptions) {
 
@@ -13,7 +14,16 @@ class Generator(val options: GenerationOptions) {
 
         while (spreadAlg.nodeCount() < options.nodeCount && spreadAlg.spread());
 
+        stretchGrid(grid)
+
         return HashiPuzzle(grid)
+    }
+
+    private fun stretchGrid(genGrid: GenGrid) {
+        for (dir in Direction.values()) {
+            val farthestLine = genGrid.getFarthestNodeLine(dir)
+            genGrid.moveLine(farthestLine, dir, genGrid.distanceToEdge(farthestLine, dir))
+        }
     }
 
 }
@@ -56,7 +66,7 @@ class GenerationOptions(
         else -> maxBridgeWidth
     }
 
-    internal val bridgeSpreadProb: Double = 0.5 + (0.5 * bridgeDensity)
+    internal val bridgeSpreadProb: Double = 0.5 + (0.5 * this.bridgeDensity)
 
 }
 
