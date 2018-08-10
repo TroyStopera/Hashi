@@ -29,11 +29,11 @@ class Generator(val options: GenerationOptions) {
 }
 
 class GenerationOptions(
-        height: Int = 7,
-        width: Int = 7,
-        nodeCount: Int = 12,
-        bridgeDensity: Double = 0.5,
-        maxBridgeWidth: Int = 2,
+        height: Int,
+        width: Int,
+        nodeCount: Int,
+        bridgeDensity: Double,
+        maxBridgeWidth: Int,
         val algorithm: GenerationAlgorithm = GenerationAlgorithm.BREADTH_FIRST_SPREAD
 ) {
 

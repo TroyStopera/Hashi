@@ -6,24 +6,17 @@ import com.troystopera.hashi.util.Direction
 
 internal class GenNode(
         value: Int,
-        coordinate: Coordinate,
+        override var coordinate: Coordinate,
         random: Random
 ) : Comparable<GenNode>, NodeCell(value, coordinate) {
 
     override var value: Int = value
         private set
 
-    override var coordinate: Coordinate = coordinate
-        private set
-
     private val uncheckedDirs = Direction.randomOrder(random)
     private val checkedDirs = mutableListOf<Direction>()
 
     constructor(value: Int, row: Int, col: Int, random: Random) : this(value, Coordinate(row, col), random)
-
-    fun setCoordinate(coordinate: Coordinate) {
-        this.coordinate = coordinate
-    }
 
     fun spreadability() = uncheckedDirs.size + checkedDirs.size
 

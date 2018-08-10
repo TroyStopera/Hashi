@@ -29,7 +29,7 @@ internal class GenGrid(height: Int, width: Int) : Grid(height, width) {
     fun moveLine(line: Line, direction: Direction, dist: Int) {
         line.mapNotNull { get(it) as? GenNode }.forEach {
             set(it.coordinate, EmptyCell)
-            it.setCoordinate(direction.translate(it.coordinate, dist))
+            it.coordinate = direction.translate(it.coordinate, dist)
             set(it.coordinate, it)
         }
 
