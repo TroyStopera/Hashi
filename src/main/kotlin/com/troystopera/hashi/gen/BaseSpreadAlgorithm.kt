@@ -6,10 +6,10 @@ import com.troystopera.hashi.EmptyCell
 import com.troystopera.hashi.NodeCell
 import com.troystopera.hashi.util.*
 
-internal abstract class SpreadAlgorithm(
-        protected val grid: GenGrid,
-        protected val options: GenerationOptions,
-        protected val random: Random
+internal abstract class BaseSpreadAlgorithm(
+        private val grid: GenGrid,
+        private val options: GenerationOptions,
+        private val random: Random
 ) {
 
     private val nodes = mutableSetOf<GenNode>()
@@ -19,16 +19,17 @@ internal abstract class SpreadAlgorithm(
 
     protected abstract fun nextSpread(): Pair<GenNode, Direction>?
 
-    protected abstract fun onNodeAdded(node: GenNode)
-
     protected abstract fun onNodePostSpread(node: GenNode)
 
-    protected fun addNode(node: GenNode) {
+    protected open fun addNode(node: GenNode) {
         nodes.add(node)
-        onNodeAdded(node)
     }
 
     fun spread(): Boolean {
+        //when first starting, add an initial node
+        if (nodes.isEmpty())
+            addNode(GenNode(0, random.nextNormalInt(options.height), random.nextNormalInt(options.width), random))
+
         // try to get a spreadable node and set it checked
         val (node, direction) = nextSpread() ?: return false
         node.setChecked(direction)
