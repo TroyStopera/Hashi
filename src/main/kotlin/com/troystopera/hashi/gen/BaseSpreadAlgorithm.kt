@@ -36,19 +36,19 @@ internal abstract class BaseSpreadAlgorithm(
 
         // randomness for spreading a node
         // only spread if a random double (between 0 and 1) is less than the spread probability
-        if (random.nextDouble() >= options.bridgeSpreadProb) {
+        if (random.nextDouble() <= options.bridgeSpreadProb) {
             onNodePostSpread(node)
             return true
         }
 
-        // generate a line te be used as the bridge to build
+        // generate a line to be used as the bridge to build
         val targetLine = Line(
                 direction.translate(node.coordinate, 1),
                 direction.translate(node.coordinate, determineRandomDistance(node, direction)))
         // determine the longest spread distance available given the targetLine
         val spreadableDistance = determineSpreadableDistance(targetLine)
 
-        // if it can't spread more than two, remove the direction, and return
+        // if it can't spread at least two, remove the direction, and return
         if (spreadableDistance < 2) {
             node.remove(direction)
             onNodePostSpread(node)
@@ -92,22 +92,16 @@ internal abstract class BaseSpreadAlgorithm(
                 }
 
                 // split the bridge and add the new parts
-                val oldBridge = grid.getBridge(newNodeCoordinate)
-                if (oldBridge != null) {
-                    bridges.remove(oldBridge)
-                    splitBridge(oldBridge, newNode).forEach {
-                        grid[it] = it.cell
-                    }
+                grid.getBridge(newNodeCoordinate)?.let {
+                    bridges.remove(it)
+                    splitBridge(it, newNode).forEach { grid[it] = it.cell }
                 }
             }
         }
 
         // update the grid with new cells
         grid[newBridge] = newBridge.cell
-        if (newNode != null) {
-            grid[newNodeCoordinate] = newNode
-            addNode(newNode)
-        }
+        newNode?.let { grid[newNodeCoordinate] = it; addNode(it) }
 
         // update bridges and the node direction/value
         bridges.add(newBridge)
