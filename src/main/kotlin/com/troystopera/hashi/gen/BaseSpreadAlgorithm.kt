@@ -17,6 +17,10 @@ internal abstract class BaseSpreadAlgorithm(
 
     fun nodeCount() = nodes.size
 
+    fun getNodes() = nodes.toList()
+
+    fun getBridges() = bridges.toList()
+
     protected abstract fun nextSpread(): Pair<GenNode, Direction>?
 
     protected abstract fun onNodePostSpread(node: GenNode)
@@ -151,8 +155,8 @@ internal abstract class BaseSpreadAlgorithm(
     }
 
     private fun splitBridge(bridge: Bridge, middle: NodeCell) = listOf(
-            Bridge(bridge.startNode, middle, bridge.cell.value),
-            Bridge(middle, bridge.endNode, bridge.cell.value)
+            Bridge(bridge.nodeOne, middle, bridge.cell.value),
+            Bridge(middle, bridge.nodeTwo, bridge.cell.value)
     )
 
 }

@@ -34,7 +34,11 @@ internal class GenGrid(height: Int, width: Int) : Grid(height, width) {
         }
 
         line.mapNotNull { getBridge(it) }.toSet().filter { it.orientation != direction.orientation }.forEach {
-            val newBridge = Bridge(get(direction.translate(it.start, dist)) as GenNode, get(direction.translate(it.end, dist)) as GenNode, it.cell.value)
+            val newBridge = Bridge(
+                    get(direction.translate(it.nodeOne.coordinate, dist)) as GenNode,
+                    get(direction.translate(it.nodeTwo.coordinate, dist)) as GenNode,
+                    it.cell.value
+            )
             set(it, EmptyCell)
             set(newBridge, newBridge.cell)
         }
@@ -53,7 +57,7 @@ internal class GenGrid(height: Int, width: Int) : Grid(height, width) {
         }
     }
 
-    override fun set(line: Line, cell: PuzzleCell) {
+    override fun set(line: Iterable<Coordinate>, cell: PuzzleCell) {
         super.set(line, cell)
         if (cell is BridgeCell)
             (line as? Bridge)?.forEach { bridges[it] = line }

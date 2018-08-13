@@ -2,6 +2,8 @@ package com.troystopera.hashi.gen
 
 import com.troystopera.hashi.Constraints
 import com.troystopera.hashi.HashiPuzzle
+import com.troystopera.hashi.HashiPuzzleMetadata
+import com.troystopera.hashi.Node
 import com.troystopera.hashi.util.Direction
 
 class Generator(val options: GenerationOptions) {
@@ -16,7 +18,9 @@ class Generator(val options: GenerationOptions) {
         //make the nodes and bridges fit to the edges of the grid
         stretchGrid(grid)
 
-        return HashiPuzzle(grid)
+        val metadata = HashiPuzzleMetadata(options.height, options.width, options.maxBridgeWidth, seed)
+        val nodes = spreadAlg.getNodes().map { Node(it.value, it.coordinate) }
+        return HashiPuzzle(metadata, nodes, spreadAlg.getBridges())
     }
 
     private fun stretchGrid(genGrid: GenGrid) {

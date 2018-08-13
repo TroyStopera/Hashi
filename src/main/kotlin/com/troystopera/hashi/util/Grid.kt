@@ -7,6 +7,8 @@ open class Grid(val height: Int, val width: Int) {
 
     private val cells = hashMapOf<Coordinate, PuzzleCell>()
 
+    fun all() = cells.entries.map { Pair(it.key, it.value) }
+
     fun clear() = cells.clear()
 
     operator fun get(coordinate: Coordinate): PuzzleCell {
@@ -20,14 +22,7 @@ open class Grid(val height: Int, val width: Int) {
         else cells[coordinate] = cell
     }
 
-    open operator fun set(line: Line, cell: PuzzleCell) {
-        validateCoordinate(line.start)
-        validateCoordinate(line.end)
-        line.forEach {
-            if (cell == EmptyCell) cells.remove(it)
-            else cells[it] = cell
-        }
-    }
+    open operator fun set(line: Iterable<Coordinate>, cell: PuzzleCell) = line.forEach { set(it, cell) }
 
     fun lineThrough(coordinate: Coordinate, orientation: Orientation): Line = when (orientation) {
         Orientation.VERTICAL -> Line(Coordinate(0, coordinate.col), Coordinate(height - 1, coordinate.col))
