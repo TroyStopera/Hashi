@@ -4,12 +4,13 @@ import com.troystopera.hashi.util.*
 
 class HashiPuzzle internal constructor(
         val metadata: HashiPuzzleMetadata,
-        private val nodes: List<Node>,
-        private val solutionBridges: List<Bridge>,
+        internal val nodes: List<Node>,
+        internal val solutionBridges: List<Bridge>,
         currentBridges: List<Bridge> = listOf()
 ) {
 
     private val grid = Grid(metadata.height, metadata.width)
+    private val bridges = mutableSetOf<Bridge>()
 
     private var incompleteNodes = nodes.size
     private var onCellUpdate: ((coordinate: Coordinate, cell: PuzzleCell) -> Unit)? = null
@@ -39,13 +40,24 @@ class HashiPuzzle internal constructor(
         if (isSolved()) onPuzzleSolved?.invoke()
     }
 
+    internal fun getBridges() = bridges.toList()
+
     fun addBridge(bridge: Bridge) {
         grid[bridge] = bridge.cell
+
         val start = grid[bridge.nodeOne.coordinate] as Node
         val end = grid[bridge.nodeTwo.coordinate] as Node
-        start.setBridge(Direction.fromOrThrow(start.coordinate, end.coordinate), bridge)
-        end.setBridge(Direction.fromOrThrow(end.coordinate, start.coordinate), bridge)
 
+        val startDir = Direction.fromOrThrow(start.coordinate, end.coordinate)
+        val endDir = Direction.fromOrThrow(end.coordinate, start.coordinate)
+
+        //remove old bridge if it exists
+        start.getBridge(startDir)?.let { bridges.remove(it) }
+
+        start.setBridge(startDir, bridge)
+        end.setBridge(endDir, bridge)
+
+        bridges.add(bridge)
         bridge.forEach { onCellUpdate?.invoke(it, bridge.cell) }
     }
 
@@ -56,18 +68,17 @@ class HashiPuzzle internal constructor(
         start.removeBridge(Direction.fromOrThrow(start.coordinate, end.coordinate))
         end.removeBridge(Direction.fromOrThrow(end.coordinate, start.coordinate))
 
+        bridges.remove(bridge)
         bridge.forEach { onCellUpdate?.invoke(it, EmptyCell) }
     }
 
     fun solve() {
-        val bridges = nodes.flatMap { it.getBridges() }.toSet().minus(solutionBridges)
+        val bridges = bridges.minus(solutionBridges)
         bridges.forEach { removeBridge(it) }
         solutionBridges.minus(bridges).forEach { addBridge(it) }
     }
 
-    fun isSolved(): Boolean {
-        return incompleteNodes == 0 && isConnected()
-    }
+    fun isSolved() = incompleteNodes == 0 && isConnected()
 
     private fun nodeChanged(node: Node, complete: Boolean) {
         if (complete) incompleteNodes--
