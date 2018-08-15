@@ -24,7 +24,7 @@ enum class Direction(val orientation: Orientation, private val transFun: (Coordi
 
         private val rOrder = arrayOf(UP, DOWN, LEFT, RIGHT)
 
-        fun randomOrder(random: Random): MutableList<Direction> {
+        internal fun randomOrder(random: Random): MutableList<Direction> {
             //shuffle current order
             for (i in 0 until rOrder.size) {
                 val swapIndex = random.nextInt(rOrder.size)

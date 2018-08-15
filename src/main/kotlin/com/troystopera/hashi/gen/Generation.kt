@@ -1,6 +1,6 @@
 package com.troystopera.hashi.gen
 
-import com.troystopera.hashi.Constraints
+import com.troystopera.hashi.PuzzleConstraints
 import com.troystopera.hashi.HashiPuzzle
 import com.troystopera.hashi.HashiPuzzleMetadata
 import com.troystopera.hashi.Node
@@ -42,14 +42,14 @@ class GenerationOptions(
 ) {
 
     val height: Int = when {
-        height < Constraints.MIN_PUZZLE_HEIGHT -> Constraints.MIN_PUZZLE_HEIGHT
-        height > Constraints.MAX_PUZZLE_HEIGHT -> Constraints.MAX_PUZZLE_HEIGHT
+        height < PuzzleConstraints.MIN_PUZZLE_HEIGHT -> PuzzleConstraints.MIN_PUZZLE_HEIGHT
+        height > PuzzleConstraints.MAX_PUZZLE_HEIGHT -> PuzzleConstraints.MAX_PUZZLE_HEIGHT
         else -> height
     }
 
     val width: Int = when {
-        height < Constraints.MIN_PUZZLE_WIDTH -> Constraints.MIN_PUZZLE_WIDTH
-        height > Constraints.MAX_PUZZLE_WIDTH -> Constraints.MAX_PUZZLE_WIDTH
+        height < PuzzleConstraints.MIN_PUZZLE_WIDTH -> PuzzleConstraints.MIN_PUZZLE_WIDTH
+        height > PuzzleConstraints.MAX_PUZZLE_WIDTH -> PuzzleConstraints.MAX_PUZZLE_WIDTH
         else -> height
     }
 
@@ -59,14 +59,14 @@ class GenerationOptions(
     }
 
     val bridgeDensity: Double = when {
-        bridgeDensity < Constraints.MIN_BRIDGE_DENSITY -> Constraints.MIN_BRIDGE_DENSITY
-        bridgeDensity > Constraints.MAX_BRIDGE_DENSITY -> Constraints.MAX_BRIDGE_DENSITY
+        bridgeDensity < PuzzleConstraints.MIN_BRIDGE_DENSITY -> PuzzleConstraints.MIN_BRIDGE_DENSITY
+        bridgeDensity > PuzzleConstraints.MAX_BRIDGE_DENSITY -> PuzzleConstraints.MAX_BRIDGE_DENSITY
         else -> bridgeDensity
     }
 
     val maxBridgeWidth: Int = when {
-        maxBridgeWidth < Constraints.MIN_BRIDGE_WIDTH -> Constraints.MIN_BRIDGE_WIDTH
-        maxBridgeWidth > Constraints.MAX_BRIDGE_WIDTH -> Constraints.MAX_BRIDGE_WIDTH
+        maxBridgeWidth < PuzzleConstraints.MIN_BRIDGE_WIDTH -> PuzzleConstraints.MIN_BRIDGE_WIDTH
+        maxBridgeWidth > PuzzleConstraints.MAX_BRIDGE_WIDTH -> PuzzleConstraints.MAX_BRIDGE_WIDTH
         else -> maxBridgeWidth
     }
 

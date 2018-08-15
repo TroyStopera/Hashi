@@ -8,7 +8,7 @@ private const val NORMAL_SAMPLES = 3
 /*
     Simple adaptation of Java's java.util.Random
  */
-class Random(seed: Long) {
+internal class Random(seed: Long) {
 
     var seed = (seed xor MULTIPLIER) and MASK
         private set

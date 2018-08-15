@@ -4,7 +4,7 @@ import com.troystopera.hashi.util.Coordinate
 import com.troystopera.hashi.util.Direction
 import com.troystopera.hashi.util.Orientation
 
-internal class Node(value: Int, coordinate: Coordinate) : NodeCell(value, coordinate) {
+class Node(value: Int, coordinate: Coordinate) : NodeCell(value, coordinate) {
 
     private var onStateChange: ((completed: Boolean) -> Unit)? = null
 
@@ -15,11 +15,11 @@ internal class Node(value: Int, coordinate: Coordinate) : NodeCell(value, coordi
     val isComplete: Boolean
         get() = currentBridgeValue == value
 
-    fun setStateChangeListener(listener: ((completed: Boolean) -> Unit)?) {
+    internal fun setStateChangeListener(listener: ((completed: Boolean) -> Unit)?) {
         onStateChange = listener
     }
 
-    fun setBridge(direction: Direction, bridge: Bridge?) {
+    internal fun setBridge(direction: Direction, bridge: Bridge?) {
         val oldValue = currentBridgeValue
         currentBridgeValue -= bridges[direction.ordinal]?.cell?.value ?: 0
         currentBridgeValue += bridge?.cell?.value ?: 0
@@ -31,7 +31,7 @@ internal class Node(value: Int, coordinate: Coordinate) : NodeCell(value, coordi
         }
     }
 
-    fun removeBridge(direction: Direction) = setBridge(direction, null)
+    internal fun removeBridge(direction: Direction) = setBridge(direction, null)
 
     fun getBridge(direction: Direction) = bridges[direction.ordinal]
 
@@ -41,6 +41,5 @@ internal class Node(value: Int, coordinate: Coordinate) : NodeCell(value, coordi
         Orientation.VERTICAL -> listOfNotNull(getBridge(Direction.UP), getBridge(Direction.DOWN))
         Orientation.HORIZONTAL -> listOfNotNull(getBridge(Direction.LEFT), getBridge(Direction.RIGHT))
     }
-
 
 }

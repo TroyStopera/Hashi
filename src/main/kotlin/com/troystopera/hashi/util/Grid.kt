@@ -3,17 +3,15 @@ package com.troystopera.hashi.util
 import com.troystopera.hashi.EmptyCell
 import com.troystopera.hashi.PuzzleCell
 
-open class Grid(val height: Int, val width: Int) {
+internal open class Grid(val height: Int, val width: Int) {
 
     private val cells = hashMapOf<Coordinate, PuzzleCell>()
 
     fun all() = cells.entries.map { Pair(it.key, it.value) }
 
-    fun clear() = cells.clear()
-
     operator fun get(coordinate: Coordinate): PuzzleCell {
         validateCoordinate(coordinate)
-        return cells.getOrElse(coordinate, { EmptyCell })
+        return cells.getOrElse(coordinate) { EmptyCell }
     }
 
     open operator fun set(coordinate: Coordinate, cell: PuzzleCell) {

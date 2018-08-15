@@ -4,7 +4,7 @@ import com.troystopera.hashi.util.*
 
 class HashiPuzzle internal constructor(
         val metadata: HashiPuzzleMetadata,
-        internal val nodes: List<Node>,
+        private val nodes: List<Node>,
         internal val solutionBridges: List<Bridge>,
         currentBridges: List<Bridge> = listOf()
 ) {
@@ -40,7 +40,9 @@ class HashiPuzzle internal constructor(
         if (isSolved()) onPuzzleSolved?.invoke()
     }
 
-    internal fun getBridges() = bridges.toList()
+    fun getNodes() = nodes.toList()
+
+    fun getBridges() = bridges.toList()
 
     fun addBridge(bridge: Bridge) {
         grid[bridge] = bridge.cell

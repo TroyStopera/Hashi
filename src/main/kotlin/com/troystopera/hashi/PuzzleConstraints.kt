@@ -1,6 +1,6 @@
 package com.troystopera.hashi
 
-object Constraints {
+object PuzzleConstraints {
 
     const val MIN_BRIDGE_WIDTH = 1
     const val MAX_BRIDGE_WIDTH = 16

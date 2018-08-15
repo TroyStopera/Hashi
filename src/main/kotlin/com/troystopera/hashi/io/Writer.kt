@@ -17,7 +17,7 @@ internal object Writer {
         writer.writeByte(SERIALIZATION_VERSION)
 
         writeMetadata(puzzle.metadata, writer)
-        writeNodes(puzzle.nodes, writer)
+        writeNodes(puzzle.getNodes(), writer)
         writeBridges(puzzle.solutionBridges, writer)
         writeBridges(puzzle.getBridges(), writer)
 
@@ -54,6 +54,6 @@ internal object Writer {
     }
 
     private fun calculateBytes(puzzle: HashiPuzzle): Int =
-            1 + 11 + (4 + (3 * puzzle.nodes.size)) + (4 + (5 * puzzle.solutionBridges.size)) + (4 + (5 * puzzle.getBridges().size))
+            1 + 11 + (4 + (3 * puzzle.getNodes().size)) + (4 + (5 * puzzle.solutionBridges.size)) + (4 + (5 * puzzle.getBridges().size))
 
 }
