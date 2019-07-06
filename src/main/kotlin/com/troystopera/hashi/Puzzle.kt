@@ -75,8 +75,7 @@ class HashiPuzzle internal constructor(
     }
 
     fun solve() {
-        val bridges = bridges.minus(solutionBridges)
-        bridges.forEach { removeBridge(it) }
+        bridges.minus(solutionBridges).forEach { removeBridge(it) }
         solutionBridges.minus(bridges).forEach { addBridge(it) }
     }
 
